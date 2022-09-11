@@ -1,17 +1,86 @@
 import './App.css'
 import styled from 'styled-components/macro'
+import { useState } from 'react'
 
 function App() {
+	const [checked, setChecked] = useState([])
+
+	const [uppercase, setUppercase] = useState(false)
+	const [lowercase, setLowerCase] = useState(false)
+	const [numers, setNumbers] = useState(false)
+	const [symbols, setSymbols] = useState(false)
+
+	const [passwordLength, setPasswordLength] = useState('10')
+
+	const includedChars = {
+		upper: [
+			'A',
+			'B',
+			'C',
+			'D',
+			'E',
+			'F',
+			'G',
+			'H',
+			'I',
+			'J',
+			'K',
+			'L',
+			'M',
+			'N',
+			'O',
+			'P',
+			'Q',
+			'R',
+			'S',
+			'T',
+			'U',
+			'V',
+			'W',
+			'X',
+			'Y',
+			'Z',
+		],
+		lower: [],
+		number: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
+		symbols: ['!', '?', '$'],
+	}
+
+	// console.log(Object.keys(includedChars)[0]) //upper
+
 	// const handleSubmit = () => {
 	// 	console.log('submitted')
 	// }
 
+	// let updatedList = [...checked]
+	// const handleChecked = (event) => {
+	// 	if (event.target.checked) {
+	// 		updatedList = [...checked, event.target.value]
+	// 	} else {
+	// 		updatedList.splice(checked.indexOf(event.target.value), 1)
+	// 	}
+	// 	setChecked(updatedList)
+	// 	console.log(updatedList)
+	// }
+
+	const handleChecked = (event) => {
+		console.log('klickad')
+	}
+
+	const changePasswordLength = (passwordLength) => {
+		setPasswordLength(passwordLength)
+	}
+
+	const generatePassword = () => {
+		console.log('password')
+	}
+
 	return (
 		<OuterWrapper>
-			<h1>Password Generator</h1>
+			<HeadingOne>Password Generator</HeadingOne>
 			<InnerWrapper>
 				<Container>
-					<GeneratedPassword>password</GeneratedPassword>
+					<GeneratedPassword>P4$5W0rD!</GeneratedPassword>
 					<Span>
 						<svg width='21' height='24' xmlns='http://www.w3.org/2000/svg'>
 							<path
@@ -28,22 +97,36 @@ function App() {
 				</Container>
 
 				<Form>
-					<InputRange type='range' id='charlength' name='charlength' min='0' max='20' step='1' value='10' />
+					<InputRange
+						type='range'
+						id='charlength'
+						name='charlength'
+						min='0'
+						max='20'
+						step='1'
+						value={passwordLength}
+						onChange={changePasswordLength}
+					/>
 
+					<CheckboxContainer>
+						<StyledCheckbox id='upper' type='checkbox' onClick={handleChecked}>
+							{/* <HiddenCheckBox type='checkbox' id='upper' name='upper' /> */}
+							<CheckIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
+								<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
+							</CheckIcon>
+						</StyledCheckbox>
+						<Label>Include Uppercase Letters</Label>
+					</CheckboxContainer>
 					<Label>
-						<Input type='checkbox' id='upper' name='upper' />
-						Include Uppercase Letters
-					</Label>
-					<Label>
-						<Input type='checkbox' id='upper' name='upper' />
+						<HiddenCheckBox type='checkbox' id='upper' name='upper' />
 						Include Lowercase Letters
 					</Label>
 					<Label>
-						<Input type='checkbox' id='upper' name='upper' />
+						<HiddenCheckBox type='checkbox' id='upper' name='upper' />
 						Include Numbers
 					</Label>
 					<Label>
-						<Input type='checkbox' id='upper' name='upper' />
+						<HiddenCheckBox type='checkbox' id='upper' name='upper' />
 						Include Symbols
 					</Label>
 				</Form>
@@ -58,11 +141,11 @@ function App() {
 						<Box> </Box>
 					</DivStrength>
 				</Container>
-				<Button>
+				<Button type='submit' onClick={generatePassword}>
 					Generate{' '}
-					<svg width='12' height='12' xmlns='http://www.w3.org/2000/svg'>
+					<Arrow width='12' height='12' xmlns='http://www.w3.org/2000/svg'>
 						<path fill='#24232C' d='m5.106 12 6-6-6-6-1.265 1.265 3.841 3.84H.001v1.79h7.681l-3.841 3.84z' />
-					</svg>
+					</Arrow>
 				</Button>
 			</InnerWrapper>
 		</OuterWrapper>
@@ -76,6 +159,7 @@ const OuterWrapper = styled.main`
 	justify-content: center;
 	width: 100vw;
 	height: 100vh;
+	max-width: 500px;
 `
 
 const InnerWrapper = styled.div`
@@ -99,13 +183,32 @@ const Container = styled.div`
 	width: 100%;
 `
 
+const HeadingOne = styled.h1`
+	color: var(--clr-grey);
+	font-size: 1rem;
+`
+
 const GeneratedPassword = styled.h2`
 	color: var(--clr-light);
+	font-size: 1.34rem;
+
+	&:hover,
+	&:focus {
+		color: var(--clr-grey);
+	}
+
+	@media screen and (min-width: 768px) {
+		font-size: 32px;
+	}
 `
 
 const Span = styled.span`
 	color: var(--clr-accent);
-	font-size: 1.5rem;
+	font-size: 1.34rem;
+
+	@media screen and (min-width: 768px) {
+		font-size: 32px;
+	}
 `
 
 const SpanStrength = styled.span`
@@ -124,14 +227,93 @@ const Form = styled.form`
 `
 
 const Label = styled.label`
-	padding-top: 1em;
+	// padding-top: 1em;
+	padding-left: 1em;
 `
 
-const InputRange = styled.input`
+const InputRange = styled.input.attrs({ type: 'range' })`
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	background: ${(props) =>
+		`linear-gradient(to right, 
+    var(--clr-accent) 0%,
+    var(--clr-accent) calc(${props.value}% * 5), 
+    var(--clr-bg) ${props.value}%,
+    var(--clr-bg) 100%);`};
+	outline: 0;
 	margin-block: 1em;
+	height: 8px;
+
+	::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		width: 28px;
+		height: 28px;
+		background: var(--clr-light);
+		border-radius: 50%;
+
+		&:hover,
+		&:focus {
+			background: var(--clr-bg);
+			border: 2px solid var(--clr-accent);
+		}
+	}
+
+	::-moz-range-thumb {
+		-moz-appearance: none;
+		width: 28px;
+		height: 28px;
+		background: var(--clr-light);
+		border-radius: 50%;
+
+		&:hover,
+		&:focus {
+			background: var(--clr-bg);
+			border: 2px solid var(--clr-accent);
+		}
+	}
 `
-const Input = styled.input`
+
+const CheckboxContainer = styled.div`
+	position: relative;
 	margin-right: 1em;
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	vertical-align: middle;
+	padding-bottom: 1em;
+`
+
+const HiddenCheckBox = styled.input.attrs({ type: 'checkbox' })`
+	margin-right: 1em;
+	border: 0;
+	clip: rect(0 0 0 0);
+	clippath: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+`
+
+const CheckIcon = styled.svg`
+	position: absolute;
+`
+
+const StyledCheckbox = styled.div`
+	display: flex;
+	align-items: center;
+	align-self: baseline;
+	width: 20px;
+	height: 20px;
+	background: ${(props) => (props.checked ? 'var(--clr-accent)' : 'none')};
+	border: 2px solid ${(props) => (props.checked ? 'var(--clr-bg-secondary)' : 'var(--clr-light)')};
+	transition: all 150ms;
+
+	${CheckIcon} {
+		visibility: ${(props) => (props.checked ? 'visible' : 'hidden')};
+	}
 `
 
 const Box = styled.span`
@@ -147,8 +329,32 @@ const Button = styled.button`
 	color: var(--clr-bg-primary);
 	text-transform: uppercase;
 	font-size: 1rem;
-	border: none;
 	padding: 1em;
+	border: 1px solid var(--clr-bg-primary);
+
+	&:hover,
+	&:focus {
+		background: var(--clr-bg-primary);
+		color: var(--clr-accent);
+		border: 1px solid var(--clr-accent);
+	}
+
+  &{Arrow}:hover {
+    path {
+      fill: var(--clr-accent);
+    }
+  }
+  &{Arrow}:focus {
+    path {
+      fill: var(--clr-accent);
+    }
+  }
+`
+
+const Arrow = styled.svg`
+	path {
+		fill: var(--clr-bg-primary);
+	}
 `
 
 export default App
