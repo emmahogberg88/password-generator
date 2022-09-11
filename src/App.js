@@ -3,50 +3,20 @@ import styled from 'styled-components/macro'
 import { useState } from 'react'
 
 function App() {
-	const [checked, setChecked] = useState([])
-
-	const [uppercase, setUppercase] = useState(false)
-	const [lowercase, setLowerCase] = useState(false)
-	const [numers, setNumbers] = useState(false)
-	const [symbols, setSymbols] = useState(false)
+	const [checkedUpper, setCheckedUpper] = useState(false)
+	const [checkedLower, setCheckedLower] = useState(false)
+	const [checkedNumber, setCheckedNumber] = useState(false)
+	const [checkedSymbol, setCheckedSymbol] = useState(false)
 
 	const [passwordLength, setPasswordLength] = useState('10')
 
-	const includedChars = {
-		upper: [
-			'A',
-			'B',
-			'C',
-			'D',
-			'E',
-			'F',
-			'G',
-			'H',
-			'I',
-			'J',
-			'K',
-			'L',
-			'M',
-			'N',
-			'O',
-			'P',
-			'Q',
-			'R',
-			'S',
-			'T',
-			'U',
-			'V',
-			'W',
-			'X',
-			'Y',
-			'Z',
-		],
-		lower: [],
-		number: ['1', '2', '3', '4', '5', '6', '7', '8', '9'],
-		symbols: ['!', '?', '$'],
-	}
+	const UPPERCASELETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+	const LOWERCASELETTERS = 'abcdefghijklmnopqrstuvwxyz'
+	const NUMBERS = '0123456789'
+	const SYMBOLS = '!@#$&*?|%+-_./:;=()[]{}'
 
-	// console.log(Object.keys(includedChars)[0]) //upper
+	// console.log(checked)
+	// console.log(Object.keys(checked)) //upper
 
 	// const handleSubmit = () => {
 	// 	console.log('submitted')
@@ -64,15 +34,30 @@ function App() {
 	// }
 
 	const handleChecked = (event) => {
-		console.log('klickad')
+		if (event.target.id === 'checkedUpper') {
+			setCheckedUpper((prev) => !prev)
+		}
+		if (event.target.id === 'checkedLower') {
+			setCheckedLower((prev) => !prev)
+		}
+		if (event.target.id === 'checkedNumber') {
+			setCheckedNumber((prev) => !prev)
+		}
+		if (event.target.id === 'checkedSymbol') {
+			setCheckedSymbol((prev) => !prev)
+		}
 	}
 
 	const changePasswordLength = (passwordLength) => {
-		setPasswordLength(passwordLength)
+		console.log(passwordLength)
+		// setPasswordLength(passwordLength)
 	}
 
 	const generatePassword = () => {
 		console.log('password')
+		//1. kolla vilka boxar som är iklickade
+		//2. om inputvärde ska ingå, lägg till i array eller string (beror på hur jag väljer att göra..)
+		//3. generera ett random lösenord från array/string som har längd = password.length
 	}
 
 	return (
@@ -93,7 +78,7 @@ function App() {
 			</InnerWrapper>
 			<InnerWrapper>
 				<Container>
-					Character Length<Span>XX</Span>
+					Character Length<Span>{passwordLength}</Span>
 				</Container>
 
 				<Form>
@@ -101,15 +86,21 @@ function App() {
 						type='range'
 						id='charlength'
 						name='charlength'
-						min='0'
-						max='20'
-						step='1'
+						min={0}
+						max={20}
+						step={1}
 						value={passwordLength}
 						onChange={changePasswordLength}
 					/>
 
 					<CheckboxContainer>
-						<StyledCheckbox id='upper' type='checkbox' onClick={handleChecked}>
+						<StyledCheckbox
+							id='checkedUpper'
+							type='checkbox'
+							value='checkedUpper'
+							checked={checkedUpper}
+							onClick={handleChecked}
+						>
 							{/* <HiddenCheckBox type='checkbox' id='upper' name='upper' /> */}
 							<CheckIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
 								<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
@@ -117,18 +108,54 @@ function App() {
 						</StyledCheckbox>
 						<Label>Include Uppercase Letters</Label>
 					</CheckboxContainer>
-					<Label>
-						<HiddenCheckBox type='checkbox' id='upper' name='upper' />
-						Include Lowercase Letters
-					</Label>
-					<Label>
-						<HiddenCheckBox type='checkbox' id='upper' name='upper' />
-						Include Numbers
-					</Label>
-					<Label>
-						<HiddenCheckBox type='checkbox' id='upper' name='upper' />
-						Include Symbols
-					</Label>
+
+					<CheckboxContainer>
+						<StyledCheckbox
+							id='checkedLower'
+							type='checkbox'
+							value='checkedLower'
+							checked={checkedLower}
+							onClick={handleChecked}
+						>
+							{/* <HiddenCheckBox type='checkbox' id='upper' name='upper' /> */}
+							<CheckIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
+								<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
+							</CheckIcon>
+						</StyledCheckbox>
+						<Label>Include Lowercase Letters</Label>
+					</CheckboxContainer>
+
+					<CheckboxContainer>
+						<StyledCheckbox
+							id='checkedNumber'
+							type='checkbox'
+							value='checkedNumber'
+							checked={checkedNumber}
+							onClick={handleChecked}
+						>
+							{/* <HiddenCheckBox type='checkbox' id='upper' name='upper' /> */}
+							<CheckIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
+								<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
+							</CheckIcon>
+						</StyledCheckbox>
+						<Label>Include Numbers</Label>
+					</CheckboxContainer>
+
+					<CheckboxContainer>
+						<StyledCheckbox
+							id='checkedSymbol'
+							type='checkbox'
+							value='checkedSymbol'
+							checked={checkedSymbol}
+							onClick={handleChecked}
+						>
+							{/* <HiddenCheckBox type='checkbox' id='upper' name='upper' /> */}
+							<CheckIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
+								<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
+							</CheckIcon>
+						</StyledCheckbox>
+						<Label>Include Symbols</Label>
+					</CheckboxContainer>
 				</Form>
 
 				<Container background='var(--clr-bg-primary)' padding='0.6em 1em' margin='1em 0'>
@@ -283,36 +310,35 @@ const CheckboxContainer = styled.div`
 	padding-bottom: 1em;
 `
 
-const HiddenCheckBox = styled.input.attrs({ type: 'checkbox' })`
-	margin-right: 1em;
-	border: 0;
-	clip: rect(0 0 0 0);
-	clippath: inset(50%);
-	height: 1px;
-	margin: -1px;
-	overflow: hidden;
-	padding: 0;
-	position: absolute;
-	white-space: nowrap;
-	width: 1px;
-`
+// const HiddenCheckBox = styled.input.attrs({ type: 'checkbox' })`
+// 	margin-right: 1em;
+// 	border: 0;
+// 	clip: rect(0 0 0 0);
+// 	clippath: inset(50%);
+// 	height: 1px;
+// 	margin: -1px;
+// 	overflow: hidden;
+// 	padding: 0;
+// 	position: absolute;
+// 	white-space: nowrap;
+// 	width: 1px;
+// `
 
-const CheckIcon = styled.svg`
-	position: absolute;
-`
+const CheckIcon = styled.svg``
 
 const StyledCheckbox = styled.div`
 	display: flex;
 	align-items: center;
 	align-self: baseline;
-	width: 20px;
-	height: 20px;
-	background: ${(props) => (props.checked ? 'var(--clr-accent)' : 'none')};
-	border: 2px solid ${(props) => (props.checked ? 'var(--clr-bg-secondary)' : 'var(--clr-light)')};
+	width: 18px;
+	height: 18px;
+	background: ${(props) => (props.checked ? 'var(--clr-accent)' : 'var(--clr-bg-secondary)')};
+	border: 2px solid ${(props) => (props.checked ? 'var(--clr-bg-accent)' : 'var(--clr-light)')};
 	transition: all 150ms;
+	cursor: pointer;
 
-	${CheckIcon} {
-		visibility: ${(props) => (props.checked ? 'visible' : 'hidden')};
+	& ${CheckIcon} {
+		display: ${(props) => (props.checked ? 'block' : 'none')};
 	}
 `
 
