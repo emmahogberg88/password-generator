@@ -53,8 +53,27 @@ function App() {
 		// setPasswordLength(passwordLength)
 	}
 
+	let selectionOfChars = ''
 	const generatePassword = () => {
-		console.log('password')
+		if (checkedUpper) {
+			selectionOfChars += UPPERCASELETTERS
+		}
+		if (checkedLower) {
+			selectionOfChars += LOWERCASELETTERS
+		}
+		if (checkedNumber) {
+			selectionOfChars += NUMBERS
+		}
+		if (checkedSymbol) {
+			selectionOfChars += SYMBOLS
+		}
+
+		console.log(selectionOfChars)
+
+		for (let i = 1; i < passwordLength; i++) {
+			console.log(i)
+		}
+		console.log(Math.floor(Math.random()))
 		//1. kolla vilka boxar som är iklickade
 		//2. om inputvärde ska ingå, lägg till i array eller string (beror på hur jag väljer att göra..)
 		//3. generera ett random lösenord från array/string som har längd = password.length
@@ -100,8 +119,9 @@ function App() {
 							value='checkedUpper'
 							checked={checkedUpper}
 							onClick={handleChecked}
+							aria-hidden={true}
 						>
-							{/* <HiddenCheckBox type='checkbox' id='upper' name='upper' /> */}
+							<HiddenCheckbox type='checkbox' id='upper' name='upper' />
 							<CheckIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
 								<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
 							</CheckIcon>
@@ -116,8 +136,9 @@ function App() {
 							value='checkedLower'
 							checked={checkedLower}
 							onClick={handleChecked}
+							aria-hidden={true}
 						>
-							{/* <HiddenCheckBox type='checkbox' id='upper' name='upper' /> */}
+							<HiddenCheckbox type='checkbox' id='upper' name='upper' />
 							<CheckIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
 								<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
 							</CheckIcon>
@@ -132,8 +153,9 @@ function App() {
 							value='checkedNumber'
 							checked={checkedNumber}
 							onClick={handleChecked}
+							aria-hidden={true}
 						>
-							{/* <HiddenCheckBox type='checkbox' id='upper' name='upper' /> */}
+							<HiddenCheckbox type='checkbox' id='upper' name='upper' />
 							<CheckIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
 								<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
 							</CheckIcon>
@@ -148,8 +170,9 @@ function App() {
 							value='checkedSymbol'
 							checked={checkedSymbol}
 							onClick={handleChecked}
+							aria-hidden={true}
 						>
-							{/* <HiddenCheckBox type='checkbox' id='upper' name='upper' /> */}
+							<HiddenCheckbox type='checkbox' id='upper' name='upper' />
 							<CheckIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
 								<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
 							</CheckIcon>
@@ -254,8 +277,8 @@ const Form = styled.form`
 `
 
 const Label = styled.label`
-	// padding-top: 1em;
 	padding-left: 1em;
+	pointer-events: none;
 `
 
 const InputRange = styled.input.attrs({ type: 'range' })`
@@ -300,8 +323,8 @@ const InputRange = styled.input.attrs({ type: 'range' })`
 	}
 `
 
-const CheckboxContainer = styled.div`
-	position: relative;
+const CheckboxContainer = styled.span`
+	// position: relative;
 	margin-right: 1em;
 	display: flex;
 	align-items: center;
@@ -310,23 +333,23 @@ const CheckboxContainer = styled.div`
 	padding-bottom: 1em;
 `
 
-// const HiddenCheckBox = styled.input.attrs({ type: 'checkbox' })`
-// 	margin-right: 1em;
-// 	border: 0;
-// 	clip: rect(0 0 0 0);
-// 	clippath: inset(50%);
-// 	height: 1px;
-// 	margin: -1px;
-// 	overflow: hidden;
-// 	padding: 0;
-// 	position: absolute;
-// 	white-space: nowrap;
-// 	width: 1px;
-// `
+const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+	margin-right: 1em;
+	border: 0;
+	clip: rect(0 0 0 0);
+	clippath: inset(50%);
+	height: 1px;
+	margin: -1px;
+	overflow: hidden;
+	padding: 0;
+	position: absolute;
+	white-space: nowrap;
+	width: 1px;
+`
 
 const CheckIcon = styled.svg``
 
-const StyledCheckbox = styled.div`
+const StyledCheckbox = styled.span`
 	display: flex;
 	align-items: center;
 	align-self: baseline;
@@ -337,8 +360,12 @@ const StyledCheckbox = styled.div`
 	transition: all 150ms;
 	cursor: pointer;
 
-	& ${CheckIcon} {
-		display: ${(props) => (props.checked ? 'block' : 'none')};
+	${CheckIcon} {
+		visibility: ${(props) => (props.checked ? 'visible' : 'hidden')};
+	}
+
+	&:focus-within {
+		transform: scale(1.2);
 	}
 `
 
