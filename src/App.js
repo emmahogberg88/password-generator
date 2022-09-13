@@ -5,60 +5,14 @@ import { passwordList } from './utils/passwordList'
 import { UPPERCASELETTERS, LOWERCASELETTERS, NUMBERS, SYMBOLS } from './utils/characterList'
 
 function App() {
-	const [checkedUpper, setCheckedUpper] = useState(false)
-	const [checkedLower, setCheckedLower] = useState(false)
-	const [checkedNumber, setCheckedNumber] = useState(false)
-	const [checkedSymbol, setCheckedSymbol] = useState(false)
-
-	// const [isChecked, setIsChecked] = useState(false) //test!
 	const [checkedState, setCheckedState] = useState(new Array(passwordList.length).fill(false))
 
 	const [passwordLength, setPasswordLength] = useState(10)
 	const [password, setPassword] = useState('')
 	const [showText, setShowText] = useState(false)
 	const [showStrength, setShowStrength] = useState('')
-	// const [checkedBoxes, setCheckedBoxes] = useState(0)
 
-	// const UPPERCASELETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-	// const LOWERCASELETTERS = 'abcdefghijklmnopqrstuvwxyz'
-	// const NUMBERS = '0123456789'
-	// const SYMBOLS = '!@#$&*?|%+-_./:;=()[]{}'
-
-	// console.log(checked)
-	// console.log(Object.keys(checked)) //upper
-
-	// const handleSubmit = () => {
-	// 	console.log('submitted')
-	// }
-
-	// let updatedList = [...checked]
-	// const handleChecked = (event) => {
-	// 	if (event.target.checked) {
-	// 		updatedList = [...checked, event.target.value]
-	// 	} else {
-	// 		updatedList.splice(checked.indexOf(event.target.value), 1)
-	// 	}
-	// 	setChecked(updatedList)
-	// 	console.log(updatedList)
-	// }
-
-	// const handleChecked = (event) => {
-	// 	if (event.target.id === 'checkedUpper') {
-	// 		setCheckedUpper((prev) => !prev)
-
-	// 	}
-	// 	if (event.target.id === 'checkedLower') {
-	// 		setCheckedLower((prev) => !prev)
-	// 	}
-	// 	if (event.target.id === 'checkedNumber') {
-	// 		setCheckedNumber((prev) => !prev)
-	// 	}
-	// 	if (event.target.id === 'checkedSymbol') {
-	// 		setCheckedSymbol((prev) => !prev)
-	// 	}
-	// }
-
-	// console.log(checkedBoxes)
+	console.log(checkedState)
 
 	let selectionOfChars = ''
 	let passwordGenerated = ''
@@ -111,6 +65,8 @@ function App() {
 
 		const passwordStrenght = updatedState.filter((value) => value === true)
 
+		//ändra till switch break??
+
 		if (passwordStrenght.length === 0) {
 			console.log('noll')
 			setShowStrength('')
@@ -132,6 +88,8 @@ function App() {
 			setShowStrength('STRONG')
 		}
 	}
+
+	console.log(showStrength)
 
 	return (
 		<OuterWrapper>
@@ -169,9 +127,9 @@ function App() {
 						onChange={(event) => setPasswordLength(event.target.value)}
 					/>
 
-					{passwordList.map(({ name, text, count }, index) => {
+					{passwordList.map(({ name, text }, index) => {
 						return (
-							<CheckboxWrapper>
+							<CheckboxWrapper key={`checkbox-${index}`}>
 								<label htmlFor={`checkbox-${index}`}>
 									{checkedState[index] && (
 										<CheckboxIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
@@ -191,34 +149,40 @@ function App() {
 							</CheckboxWrapper>
 						)
 					})}
-
-					{/* <CheckboxWrapper>
-						<label>
-							{isChecked && (
-								<CheckboxIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
-									<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
-								</CheckboxIcon>
-							)}
-							<Checkbox
-								type='checkbox'
-								checked={isChecked}
-								id='upper'
-								name='upper'
-								onChange={() => setIsChecked((prev) => !prev)}
-							/>
-							testar!
-						</label>
-					</CheckboxWrapper> */}
 				</Form>
 
 				<Container background='var(--clr-bg-primary)' padding='0.6em 1em' margin='1em 0'>
 					<SpanStrength color='var(--clr-grey)'>Strength</SpanStrength>
 					<DivStrength>
 						<SpanStrength>{showStrength}</SpanStrength>
-						<Box> </Box>
-						<Box> </Box>
-						<Box> </Box>
-						<Box> </Box>
+						{showStrength === 'TO WEAK!' ? (
+							<BoxToWeak></BoxToWeak>
+						) : showStrength === 'WEAK' ? (
+							<BoxWeak></BoxWeak>
+						) : showStrength === 'MEDIUM' ? (
+							<BoxMedium></BoxMedium>
+						) : showStrength === 'STRONG' ? (
+							<BoxStrong></BoxStrong>
+						) : (
+							<Box></Box>
+						)}
+						{showStrength === 'WEAK' ? (
+							<BoxWeak></BoxWeak>
+						) : showStrength === 'MEDIUM' ? (
+							<BoxMedium></BoxMedium>
+						) : showStrength === 'STRONG' ? (
+							<BoxStrong></BoxStrong>
+						) : (
+							<Box></Box>
+						)}
+						{showStrength === 'MEDIUM' ? (
+							<BoxMedium></BoxMedium>
+						) : showStrength === 'STRONG' ? (
+							<BoxStrong></BoxStrong>
+						) : (
+							<Box></Box>
+						)}
+						{showStrength === 'STRONG' ? <BoxStrong></BoxStrong> : <Box></Box>}
 					</DivStrength>
 				</Container>
 				<Button type='submit' onClick={generatePassword}>
@@ -300,6 +264,42 @@ const DocumentIcon = styled.svg`
 		}
 	}
 `
+const Box = styled.div`
+	border: 2px solid var(--clr-light)};
+	background: ${(props) => props.backgroundcolor};
+	height: 28px;
+	width: 10px;
+	margin-left: 0.35em;
+`
+
+const BoxToWeak = styled.div`
+	border: none;
+	background: var(--clr-red);
+	height: 28px;
+	width: 10px;
+	margin-left: 0.35em;
+`
+const BoxWeak = styled.div`
+	border: none;
+	background: var(--clr-orange);
+	height: 28px;
+	width: 10px;
+	margin-left: 0.35em;
+`
+const BoxMedium = styled.div`
+	border: none;
+	background: var(--clr-yellow);
+	height: 28px;
+	width: 10px;
+	margin-left: 0.35em;
+`
+const BoxStrong = styled.div`
+	border: none;
+	background: var(--clr-accent);
+	height: 28px;
+	width: 10px;
+	margin-left: 0.35em;
+`
 
 const SpanStrength = styled.span`
 	text-transform: uppercase;
@@ -358,60 +358,6 @@ const InputRange = styled.input.attrs({ type: 'range' })`
 	}
 `
 
-// const CheckboxContainer = styled.span`
-// 	// position: relative;
-// 	margin-right: 1em;
-// 	display: flex;
-// 	align-items: center;
-// 	justify-content: flex-start;
-// 	vertical-align: middle;
-// 	padding-bottom: 1em;
-// `
-
-// const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
-// 	margin-right: 1em;
-// 	border: 0;
-// 	clip: rect(0 0 0 0);
-// 	clippath: inset(50%);
-// 	height: 1px;
-// 	margin: -1px;
-// 	overflow: hidden;
-// 	padding: 0;
-// 	position: absolute;
-// 	white-space: nowrap;
-// 	width: 1px;
-// `
-
-// const CheckIcon = styled.svg``
-
-// const StyledCheckbox = styled.span`
-// 	display: flex;
-// 	align-items: center;
-// 	align-self: baseline;
-// 	width: 18px;
-// 	height: 18px;
-// 	background: ${(props) => (props.checked ? 'var(--clr-accent)' : 'var(--clr-bg-secondary)')};
-// 	border: 2px solid ${(props) => (props.checked ? 'var(--clr-bg-accent)' : 'var(--clr-light)')};
-// 	transition: all 150ms;
-// 	cursor: pointer;
-
-// 	${CheckIcon} {
-// 		visibility: ${(props) => (props.checked ? 'visible' : 'hidden')};
-// 	}
-
-// 	&:focus-within {
-// 		transform: scale(1.2);
-// 	}
-// `
-
-const Box = styled.span`
-	border: 2px solid var(--clr-light);
-	background: ${(props) => props.backgroundcolor};
-	height: 28px;
-	width: 10px;
-	margin-left: 0.35em;
-`
-
 const Button = styled.button`
 	background: var(--clr-accent);
 	color: var(--clr-bg-primary);
@@ -445,7 +391,6 @@ const Arrow = styled.svg`
 	}
 `
 
-//////////////
 const CheckboxIcon = styled.svg`
 	position: absolute;
 	left: 2.5px;
@@ -479,7 +424,5 @@ const CheckboxWrapper = styled.div`
 	position: relative;
 	padding-block: 0.5em;
 `
-
-///////////////////////
 
 export default App
