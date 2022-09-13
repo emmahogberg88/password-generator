@@ -2,6 +2,7 @@ import './App.css'
 import styled from 'styled-components/macro'
 import { useState } from 'react'
 import { passwordList } from './utils/passwordList'
+import { UPPERCASELETTERS, LOWERCASELETTERS, NUMBERS, SYMBOLS } from './utils/characterList'
 
 function App() {
 	const [checkedUpper, setCheckedUpper] = useState(false)
@@ -9,18 +10,19 @@ function App() {
 	const [checkedNumber, setCheckedNumber] = useState(false)
 	const [checkedSymbol, setCheckedSymbol] = useState(false)
 
-	const [isChecked, setIsChecked] = useState(false) //test!
+	// const [isChecked, setIsChecked] = useState(false) //test!
 	const [checkedState, setCheckedState] = useState(new Array(passwordList.length).fill(false))
 
 	const [passwordLength, setPasswordLength] = useState(10)
 	const [password, setPassword] = useState('')
 	const [showText, setShowText] = useState(false)
+	const [showStrength, setShowStrength] = useState('')
 	// const [checkedBoxes, setCheckedBoxes] = useState(0)
 
-	const UPPERCASELETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-	const LOWERCASELETTERS = 'abcdefghijklmnopqrstuvwxyz'
-	const NUMBERS = '0123456789'
-	const SYMBOLS = '!@#$&*?|%+-_./:;=()[]{}'
+	// const UPPERCASELETTERS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+	// const LOWERCASELETTERS = 'abcdefghijklmnopqrstuvwxyz'
+	// const NUMBERS = '0123456789'
+	// const SYMBOLS = '!@#$&*?|%+-_./:;=()[]{}'
 
 	// console.log(checked)
 	// console.log(Object.keys(checked)) //upper
@@ -40,20 +42,21 @@ function App() {
 	// 	console.log(updatedList)
 	// }
 
-	const handleChecked = (event) => {
-		if (event.target.id === 'checkedUpper') {
-			setCheckedUpper((prev) => !prev)
-		}
-		if (event.target.id === 'checkedLower') {
-			setCheckedLower((prev) => !prev)
-		}
-		if (event.target.id === 'checkedNumber') {
-			setCheckedNumber((prev) => !prev)
-		}
-		if (event.target.id === 'checkedSymbol') {
-			setCheckedSymbol((prev) => !prev)
-		}
-	}
+	// const handleChecked = (event) => {
+	// 	if (event.target.id === 'checkedUpper') {
+	// 		setCheckedUpper((prev) => !prev)
+
+	// 	}
+	// 	if (event.target.id === 'checkedLower') {
+	// 		setCheckedLower((prev) => !prev)
+	// 	}
+	// 	if (event.target.id === 'checkedNumber') {
+	// 		setCheckedNumber((prev) => !prev)
+	// 	}
+	// 	if (event.target.id === 'checkedSymbol') {
+	// 		setCheckedSymbol((prev) => !prev)
+	// 	}
+	// }
 
 	// console.log(checkedBoxes)
 
@@ -61,20 +64,18 @@ function App() {
 	let passwordGenerated = ''
 
 	const generatePassword = () => {
-		if (checkedUpper) {
+		if (checkedState[0]) {
 			selectionOfChars += UPPERCASELETTERS
 		}
-		if (checkedLower) {
+		if (checkedState[1]) {
 			selectionOfChars += LOWERCASELETTERS
 		}
-		if (checkedNumber) {
+		if (checkedState[2]) {
 			selectionOfChars += NUMBERS
 		}
-		if (checkedSymbol) {
+		if (checkedState[3]) {
 			selectionOfChars += SYMBOLS
 		}
-
-		console.log(selectionOfChars)
 
 		for (let i = 0; i < passwordLength; i++) {
 			passwordGenerated += selectionOfChars.charAt(Math.floor(Math.random() * selectionOfChars.length))
@@ -100,29 +101,35 @@ function App() {
 		}
 	}
 
-	const getStrength = (count) => {
-		console.log('hej')
-	}
-
-	const handleChange = (position) => {
+	const handleChange = (position, name) => {
 		const updatedState = checkedState.map((item, index) => {
 			return index === position ? !item : item
 		})
 		setCheckedState(updatedState)
 
+		console.log(name)
+
 		const passwordStrenght = updatedState.filter((value) => value === true)
 
+		if (passwordStrenght.length === 0) {
+			console.log('noll')
+			setShowStrength('')
+		}
 		if (passwordStrenght.length === 1) {
 			console.log('ett')
+			setShowStrength('TO WEAK!')
 		}
 		if (passwordStrenght.length === 2) {
 			console.log('två')
+			setShowStrength('WEAK')
 		}
 		if (passwordStrenght.length === 3) {
 			console.log('tre')
+			setShowStrength('MEDIUM')
 		}
 		if (passwordStrenght.length === 4) {
 			console.log('fyra')
+			setShowStrength('STRONG')
 		}
 	}
 
@@ -162,74 +169,6 @@ function App() {
 						onChange={(event) => setPasswordLength(event.target.value)}
 					/>
 
-					<CheckboxContainer>
-						<StyledCheckbox
-							id='checkedUpper'
-							type='checkbox'
-							value='checkedUpper'
-							checked={checkedUpper}
-							onClick={handleChecked}
-							aria-hidden={true}
-						>
-							<HiddenCheckbox type='checkbox' id='upper' name='upper' />
-							<CheckIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
-								<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
-							</CheckIcon>
-						</StyledCheckbox>
-						<Label>Include Uppercase Letters</Label>
-					</CheckboxContainer>
-
-					<CheckboxContainer>
-						<StyledCheckbox
-							id='checkedLower'
-							type='checkbox'
-							value='checkedLower'
-							checked={checkedLower}
-							onClick={handleChecked}
-							aria-hidden={true}
-						>
-							<HiddenCheckbox type='checkbox' id='upper' name='upper' />
-							<CheckIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
-								<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
-							</CheckIcon>
-						</StyledCheckbox>
-						<Label>Include Lowercase Letters</Label>
-					</CheckboxContainer>
-
-					<CheckboxContainer>
-						<StyledCheckbox
-							id='checkedNumber'
-							type='checkbox'
-							value='checkedNumber'
-							checked={checkedNumber}
-							onClick={handleChecked}
-							aria-hidden={true}
-						>
-							<HiddenCheckbox type='checkbox' id='upper' name='upper' />
-							<CheckIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
-								<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
-							</CheckIcon>
-						</StyledCheckbox>
-						<Label>Include Numbers</Label>
-					</CheckboxContainer>
-
-					<CheckboxContainer>
-						<StyledCheckbox
-							id='checkedSymbol'
-							type='checkbox'
-							value='checkedSymbol'
-							checked={checkedSymbol}
-							onClick={handleChecked}
-							aria-hidden={true}
-						>
-							<HiddenCheckbox type='checkbox' id='upper' name='upper' />
-							<CheckIcon width='14' height='12' xmlns='http://www.w3.org/2000/svg'>
-								<path stroke='#18171F' strokeWidth='3' fill='none' d='M1 5.607 4.393 9l8-8' />
-							</CheckIcon>
-						</StyledCheckbox>
-						<Label>Include Symbols</Label>
-					</CheckboxContainer>
-
 					{passwordList.map(({ name, text, count }, index) => {
 						return (
 							<CheckboxWrapper>
@@ -245,12 +184,10 @@ function App() {
 										name={name}
 										value={name}
 										checked={checkedState[index]}
-										onChange={() => handleChange(index)}
+										onChange={() => handleChange(index, name)}
 									/>
 									{text}
 								</label>
-								<p>{checkedState[index] ? 'checked' : 'no'}</p>
-								{getStrength(count)}
 							</CheckboxWrapper>
 						)
 					})}
@@ -277,7 +214,7 @@ function App() {
 				<Container background='var(--clr-bg-primary)' padding='0.6em 1em' margin='1em 0'>
 					<SpanStrength color='var(--clr-grey)'>Strength</SpanStrength>
 					<DivStrength>
-						<SpanStrength>MEDIUM</SpanStrength>
+						<SpanStrength>{showStrength}</SpanStrength>
 						<Box> </Box>
 						<Box> </Box>
 						<Box> </Box>
@@ -379,11 +316,6 @@ const Form = styled.form`
 	flex-direction: column;
 `
 
-const Label = styled.label`
-	padding-left: 1em;
-	pointer-events: none;
-`
-
 const InputRange = styled.input.attrs({ type: 'range' })`
 	-webkit-appearance: none;
 	-moz-appearance: none;
@@ -426,51 +358,51 @@ const InputRange = styled.input.attrs({ type: 'range' })`
 	}
 `
 
-const CheckboxContainer = styled.span`
-	// position: relative;
-	margin-right: 1em;
-	display: flex;
-	align-items: center;
-	justify-content: flex-start;
-	vertical-align: middle;
-	padding-bottom: 1em;
-`
+// const CheckboxContainer = styled.span`
+// 	// position: relative;
+// 	margin-right: 1em;
+// 	display: flex;
+// 	align-items: center;
+// 	justify-content: flex-start;
+// 	vertical-align: middle;
+// 	padding-bottom: 1em;
+// `
 
-const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
-	margin-right: 1em;
-	border: 0;
-	clip: rect(0 0 0 0);
-	clippath: inset(50%);
-	height: 1px;
-	margin: -1px;
-	overflow: hidden;
-	padding: 0;
-	position: absolute;
-	white-space: nowrap;
-	width: 1px;
-`
+// const HiddenCheckbox = styled.input.attrs({ type: 'checkbox' })`
+// 	margin-right: 1em;
+// 	border: 0;
+// 	clip: rect(0 0 0 0);
+// 	clippath: inset(50%);
+// 	height: 1px;
+// 	margin: -1px;
+// 	overflow: hidden;
+// 	padding: 0;
+// 	position: absolute;
+// 	white-space: nowrap;
+// 	width: 1px;
+// `
 
-const CheckIcon = styled.svg``
+// const CheckIcon = styled.svg``
 
-const StyledCheckbox = styled.span`
-	display: flex;
-	align-items: center;
-	align-self: baseline;
-	width: 18px;
-	height: 18px;
-	background: ${(props) => (props.checked ? 'var(--clr-accent)' : 'var(--clr-bg-secondary)')};
-	border: 2px solid ${(props) => (props.checked ? 'var(--clr-bg-accent)' : 'var(--clr-light)')};
-	transition: all 150ms;
-	cursor: pointer;
+// const StyledCheckbox = styled.span`
+// 	display: flex;
+// 	align-items: center;
+// 	align-self: baseline;
+// 	width: 18px;
+// 	height: 18px;
+// 	background: ${(props) => (props.checked ? 'var(--clr-accent)' : 'var(--clr-bg-secondary)')};
+// 	border: 2px solid ${(props) => (props.checked ? 'var(--clr-bg-accent)' : 'var(--clr-light)')};
+// 	transition: all 150ms;
+// 	cursor: pointer;
 
-	${CheckIcon} {
-		visibility: ${(props) => (props.checked ? 'visible' : 'hidden')};
-	}
+// 	${CheckIcon} {
+// 		visibility: ${(props) => (props.checked ? 'visible' : 'hidden')};
+// 	}
 
-	&:focus-within {
-		transform: scale(1.2);
-	}
-`
+// 	&:focus-within {
+// 		transform: scale(1.2);
+// 	}
+// `
 
 const Box = styled.span`
 	border: 2px solid var(--clr-light);
@@ -516,8 +448,8 @@ const Arrow = styled.svg`
 //////////////
 const CheckboxIcon = styled.svg`
 	position: absolute;
-	left: 2px;
-	top: 3px;
+	left: 2.5px;
+	top: 12px;
 `
 
 const Checkbox = styled.input.attrs({ type: 'checkbox' })`
@@ -545,6 +477,7 @@ const Checkbox = styled.input.attrs({ type: 'checkbox' })`
 
 const CheckboxWrapper = styled.div`
 	position: relative;
+	padding-block: 0.5em;
 `
 
 ///////////////////////
