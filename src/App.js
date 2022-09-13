@@ -1,6 +1,6 @@
 import './App.css'
-import styled from 'styled-components/macro'
 import { useState } from 'react'
+import styled from 'styled-components/macro'
 import { passwordList } from './utils/passwordList'
 import { UPPERCASELETTERS, LOWERCASELETTERS, NUMBERS, SYMBOLS } from './utils/characterList'
 
@@ -12,7 +12,30 @@ function App() {
 	const [showText, setShowText] = useState(false)
 	const [showStrength, setShowStrength] = useState('')
 
-	console.log(checkedState)
+	const handleChange = (position) => {
+		const updatedState = checkedState.map((item, index) => {
+			return index === position ? !item : item
+		})
+		setCheckedState(updatedState)
+
+		const passwordStrenght = updatedState.filter((value) => value === true)
+
+		if (passwordStrenght.length === 0) {
+			setShowStrength('')
+		}
+		if (passwordStrenght.length === 1) {
+			setShowStrength('TO WEAK!')
+		}
+		if (passwordStrenght.length === 2) {
+			setShowStrength('WEAK')
+		}
+		if (passwordStrenght.length === 3) {
+			setShowStrength('MEDIUM')
+		}
+		if (passwordStrenght.length === 4) {
+			setShowStrength('STRONG')
+		}
+	}
 
 	let selectionOfChars = ''
 	let passwordGenerated = ''
@@ -54,42 +77,6 @@ function App() {
 			console.log('error')
 		}
 	}
-
-	const handleChange = (position, name) => {
-		const updatedState = checkedState.map((item, index) => {
-			return index === position ? !item : item
-		})
-		setCheckedState(updatedState)
-
-		console.log(name)
-
-		const passwordStrenght = updatedState.filter((value) => value === true)
-
-		//ändra till switch break??
-
-		if (passwordStrenght.length === 0) {
-			console.log('noll')
-			setShowStrength('')
-		}
-		if (passwordStrenght.length === 1) {
-			console.log('ett')
-			setShowStrength('TO WEAK!')
-		}
-		if (passwordStrenght.length === 2) {
-			console.log('två')
-			setShowStrength('WEAK')
-		}
-		if (passwordStrenght.length === 3) {
-			console.log('tre')
-			setShowStrength('MEDIUM')
-		}
-		if (passwordStrenght.length === 4) {
-			console.log('fyra')
-			setShowStrength('STRONG')
-		}
-	}
-
-	console.log(showStrength)
 
 	return (
 		<OuterWrapper>
@@ -142,7 +129,7 @@ function App() {
 										name={name}
 										value={name}
 										checked={checkedState[index]}
-										onChange={() => handleChange(index, name)}
+										onChange={() => handleChange(index)}
 									/>
 									{text}
 								</label>
@@ -279,6 +266,7 @@ const BoxToWeak = styled.div`
 	width: 10px;
 	margin-left: 0.35em;
 `
+
 const BoxWeak = styled.div`
 	border: none;
 	background: var(--clr-orange);
@@ -286,6 +274,7 @@ const BoxWeak = styled.div`
 	width: 10px;
 	margin-left: 0.35em;
 `
+
 const BoxMedium = styled.div`
 	border: none;
 	background: var(--clr-yellow);
@@ -293,6 +282,7 @@ const BoxMedium = styled.div`
 	width: 10px;
 	margin-left: 0.35em;
 `
+
 const BoxStrong = styled.div`
 	border: none;
 	background: var(--clr-accent);
@@ -307,6 +297,7 @@ const SpanStrength = styled.span`
 	margin-right: 0.5em;
 	color: ${(props) => props.color};
 `
+
 const DivStrength = styled.div`
 	display: flex;
 `
@@ -410,14 +401,6 @@ const Checkbox = styled.input.attrs({ type: 'checkbox' })`
 	cursor: pointer;
 	border: 2px solid ${(props) => (props.checked ? 'var(--clr-bg-accent)' : 'var(--clr-light)')};
 	background: ${(props) => (props.checked ? 'var(--clr-accent)' : 'var(--clr-bg-secondary)')};
-
-	// &:focus-within {
-	// 	transform: scale(1.2);
-	// }
-
-	// ${CheckboxIcon} {
-	// 	visibility: ${(props) => (props.checked ? 'visible' : 'hidden')};
-	// }
 `
 
 const CheckboxWrapper = styled.div`
