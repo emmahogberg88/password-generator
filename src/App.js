@@ -35,7 +35,7 @@ function App() {
 	const [showText, setShowText] = useState(false)
 	const [showStrength, setShowStrength] = useState('')
 
-	const handleChange = (position) => {
+	const handleCheckboxChange = (position) => {
 		const updatedState = checkedState.map((item, index) => {
 			return index === position ? !item : item
 		})
@@ -154,7 +154,7 @@ function App() {
 											name={name}
 											value={name}
 											checked={checkedState[index]}
-											onChange={() => handleChange(index)}
+											onChange={() => handleCheckboxChange(index)}
 										/>
 										{text}
 									</label>
@@ -163,7 +163,7 @@ function App() {
 						})}
 					</Form>
 
-					<Container background='var(--clr-bg-primary)' padding='0.6em 1em' margin='1em 0'>
+					<Container background='var(--clr-bg-primary)' padding='1em 1em' margin='1em 0'>
 						<SpanStrength color='var(--clr-grey)'>Strength</SpanStrength>
 						<DivStrength>
 							<SpanStrength>{showStrength}</SpanStrength>

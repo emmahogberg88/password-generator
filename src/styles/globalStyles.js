@@ -50,6 +50,10 @@ export const InnerWrapper = styled.div`
 
 	padding: 0.75em;
 	margin-top: 1em;
+
+	@media screen and (min-width: 768px) {
+		padding: 1.5em;
+	}
 `
 
 export const Container = styled.div`
@@ -65,11 +69,15 @@ export const Container = styled.div`
 export const HeadingOne = styled.h1`
 	color: var(--clr-grey);
 	font-size: 1rem;
+
+	@media screen and (min-width: 768px) {
+		font-size: 24px;
+	}
 `
 
 export const GeneratedPassword = styled.h2`
 	color: ${(props) => (props.password ? 'var(--clr-light)' : 'var(--clr-grey)')};
-	font-size: 1.34rem;
+	font-size: 24px;
 
 	&:hover,
 	&:focus {
@@ -222,6 +230,10 @@ export const Button = styled.button`
       fill: var(--clr-accent);
     }
   }
+
+  @media screen and (min-width: 768px) {
+    margin: 1em 0;
+	}
 `
 
 export const Arrow = styled.svg`
@@ -249,6 +261,14 @@ export const Checkbox = styled.input.attrs({ type: 'checkbox' })`
 	cursor: pointer;
 	border: 2px solid ${(props) => (props.checked ? 'var(--clr-bg-accent)' : 'var(--clr-light)')};
 	background: ${(props) => (props.checked ? 'var(--clr-accent)' : 'var(--clr-bg-secondary)')};
+
+	&:focus {
+		border: 2px solid var(--clr-accent);
+	}
+
+	&:hover {
+		border: 2px solid var(--clr-accent);
+	}
 `
 
 export const CheckboxWrapper = styled.div`
