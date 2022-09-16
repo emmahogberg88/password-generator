@@ -78,6 +78,8 @@ export const HeadingOne = styled.h1`
 export const GeneratedPassword = styled.h2`
 	color: ${(props) => (props.password ? 'var(--clr-light)' : 'var(--clr-grey)')};
 	font-size: 24px;
+	max-width: 12ch;
+	word-break: break-word;
 
 	&:hover,
 	&:focus {
@@ -86,6 +88,7 @@ export const GeneratedPassword = styled.h2`
 
 	@media screen and (min-width: 768px) {
 		font-size: 32px;
+		max-width: 20ch;
 	}
 `
 
